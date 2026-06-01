@@ -126,7 +126,7 @@ p{font-size:.85em;line-height:1.7;color:#c9d1d9;margin:4px 0}
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-left">
-    <span class="logo">🐍 Python 期末</span>
+    <span class="logo">Python 期末</span>
     <div class="chapter-tabs" id="chapterTabs"></div>
   </div>
   <div class="topbar-right" id="slideTitle"></div>
@@ -166,7 +166,7 @@ p{font-size:.85em;line-height:1.7;color:#c9d1d9;margin:4px 0}
 <span class="cm"># 元组</span>  t   = ()
 <span class="cm"># 字典</span>  d   = {}       <span class="cm"># {} 是空字典</span>
 <span class="cm"># 集合</span>  s   = <span class="fn">set</span>()   <span class="cm"># 空集合必须用set()</span>
-<span class="cm"># ❌  s   = {}   这是空字典！</span></pre>
+<span class="cm"># 错误: s = {}  这是空字典！</span></pre>
         <div class="warn">{ } 是空字典，不是空集合</div>
       </div>
       <div class="card">
@@ -415,7 +415,7 @@ d = {<span class="st">'abc'</span>:<span class="num">123</span>, <span class="st
 MonthandFlower.get(<span class="fn">str</span>(n)+<span class="st">"月"</span>)
 
 <span class="cm"># 不能创建字典（list不能做key）</span>
-d = {[<span class="num">1</span>,<span class="num">2</span>]:<span class="num">3</span>}   <span class="cm"># ❌ 报错</span></pre>
+d = {[<span class="num">1</span>,<span class="num">2</span>]:<span class="num">3</span>}   <span class="cm"># 错误: 报错</span></pre>
       </div>
       <div class="card">
         <div class="card-h">创建字典对比</div>
@@ -423,7 +423,7 @@ d = {[<span class="num">1</span>,<span class="num">2</span>]:<span class="num">3
 d = {<span class="num">1</span>:<span class="num">2</span>, <span class="num">3</span>:<span class="num">4</span>}         <span class="cm"># 整数key ✓</span>
 d = {(<span class="num">1</span>,<span class="num">2</span>):<span class="num">3</span>}           <span class="cm"># 元组key ✓</span>
 d = {<span class="st">'张三'</span>:<span class="num">1</span>}           <span class="cm"># 字符串key ✓</span>
-d = {[<span class="num">1</span>,<span class="num">2</span>]:<span class="num">3</span>}           <span class="cm"># ❌ 列表不能做key</span></pre>
+d = {[<span class="num">1</span>,<span class="num">2</span>]:<span class="num">3</span>}           <span class="cm"># 错误: 列表不能做key</span></pre>
         <div class="warn">d.clear() 保留变量本身；清空后 d 是 {}，不是未定义</div>
       </div>
     </div>
@@ -468,7 +468,7 @@ s1 = <span class="fn">set</span>()         <span class="cm"># 空集合 ✓</spa
 s2 = <span class="fn">set</span>(<span class="st">"abcd"</span>)   <span class="cm"># {'a','b','c','d'} ✓</span>
 s3 = {<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>}     <span class="cm"># 集合 ✓  ← 没有冒号</span>
 s4 = <span class="fn">set</span>([<span class="num">3</span>,<span class="num">2</span>,<span class="num">1</span>])  <span class="cm"># {1,2,3} ✓</span>
-<span class="cm"># ❌: {1,2,3,4} 写成 s3 是集合没问题</span></pre>
+<span class="cm"># 注意: {1,2,3,4} 写成 s3 是集合没问题</span></pre>
       </div>
       <div class="card">
         <div class="card-h">字典 vs 集合 区分</div>
