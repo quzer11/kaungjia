@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python 期末复习</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface2: #21262d;
+  --border: #30363d;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --blue: #58a6ff;
+  --green: #3fb950;
+  --red: #f85149;
+  --yellow: #d29922;
+  --purple: #bc8cff;
+  --cyan: #39d353;
+  --orange: #ffa657;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif}
+
+/* ── Layout ── */
+.app{display:grid;grid-template-rows:56px 1fr 52px;height:100vh}
+
+/* ── Top bar ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--border);background:var(--surface)}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.logo{font-size:1.05em;font-weight:700;color:var(--blue)}
+.chapter-tabs{display:flex;gap:4px}
+.ctab{padding:5px 12px;border-radius:6px;font-size:0.78em;cursor:pointer;border:1px solid transparent;color:var(--muted);transition:all .15s}
+.ctab:hover{color:var(--text);background:var(--surface2)}
+.ctab.active{color:var(--blue);background:rgba(88,166,255,.1);border-color:rgba(88,166,255,.3)}
+.topbar-right{font-size:0.78em;color:var(--muted)}
+
+/* ── Content ── */
+.slides-wrap{position:relative;overflow:hidden}
+.slide{position:absolute;inset:0;padding:28px 36px 8px;display:none;flex-direction:column;gap:0;overflow-y:auto}
+.slide.active{display:flex;animation:enter .22s ease}
+@keyframes enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Slide header ── */
+.slide-header{margin-bottom:18px}
+.badge{display:inline-block;font-size:.68em;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:rgba(88,166,255,.12);color:var(--blue);border:1px solid rgba(88,166,255,.25);margin-bottom:8px}
+.slide-title{font-size:1.7em;font-weight:700;color:var(--text);line-height:1.2}
+
+/* ── Grid ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1}
+.g-auto{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;flex:1}
+.col{display:flex;flex-direction:column;gap:12px}
+
+/* ── Cards ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.card-h{font-size:.72em;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+
+/* ── Table ── */
+table{width:100%;border-collapse:collapse;font-size:.82em}
+th{background:rgba(88,166,255,.08);color:var(--blue);padding:7px 10px;text-align:left;font-weight:600;border-bottom:1px solid var(--border)}
+td{padding:6px 10px;border-bottom:1px solid rgba(48,54,61,.6);color:#c9d1d9}
+tr:last-child td{border-bottom:none}
+td code,th code{background:rgba(88,166,255,.1);color:#79c0ff;padding:1px 5px;border-radius:4px;font-size:.9em}
+.ok{color:var(--green);font-weight:700}
+.no{color:var(--red);font-weight:700}
+
+/* ── Code ── */
+pre{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:12px 15px;font-size:.8em;line-height:1.75;overflow-x:auto;font-family:'JetBrains Mono','Fira Code','Menlo',monospace}
+code{font-family:'JetBrains Mono','Fira Code','Menlo',monospace}
+.cm{color:#484f58;font-style:italic}
+.kw{color:#ff7b72}
+.fn{color:#d2a8ff}
+.st{color:#a5d6ff}
+.nb{color:#f0883e}
+.op{color:#79c0ff}
+.num{color:#ffa198}
+.bi{color:#ffa657}
+
+/* ── Callouts ── */
+.warn{background:rgba(248,81,73,.07);border-left:3px solid var(--red);padding:9px 13px;border-radius:0 7px 7px 0;font-size:.83em;color:#ffa198;margin:6px 0}
+.tip{background:rgba(63,185,80,.07);border-left:3px solid var(--green);padding:9px 13px;border-radius:0 7px 7px 0;font-size:.83em;color:#7ee787;margin:6px 0}
+.note{background:rgba(88,166,255,.07);border-left:3px solid var(--blue);padding:9px 13px;border-radius:0 7px 7px 0;font-size:.83em;color:#a5d6ff;margin:6px 0}
+
+/* ── Inline ── */
+.hl{color:var(--yellow);font-weight:600}
+.hlg{color:var(--green);font-weight:600}
+.hlr{color:var(--red);font-weight:600}
+.hlb{color:var(--blue);font-weight:600}
+.hlp{color:var(--purple);font-weight:600}
+ul{padding-left:18px}
+li{font-size:.85em;line-height:1.7;color:#c9d1d9;margin:3px 0}
+li strong{color:var(--text)}
+p{font-size:.85em;line-height:1.7;color:#c9d1d9;margin:4px 0}
+
+/* ── Tags ── */
+.tag{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.72em;font-weight:600;margin:2px}
+.tg{background:rgba(63,185,80,.12);color:#3fb950;border:1px solid rgba(63,185,80,.3)}
+.tr{background:rgba(248,81,73,.12);color:#f85149;border:1px solid rgba(248,81,73,.3)}
+.tb{background:rgba(88,166,255,.12);color:#58a6ff;border:1px solid rgba(88,166,255,.3)}
+.ty{background:rgba(210,153,34,.12);color:#d29922;border:1px solid rgba(210,153,34,.3)}
+
+/* ── Bottom bar ── */
+.bottombar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-top:1px solid var(--border);background:var(--surface)}
+.nav-btns{display:flex;gap:8px;align-items:center}
+.nbtn{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 16px;border-radius:7px;cursor:pointer;font-size:.82em;transition:all .15s}
+.nbtn:hover:not(:disabled){background:rgba(88,166,255,.12);border-color:var(--blue);color:var(--blue)}
+.nbtn:disabled{opacity:.3;cursor:default}
+.progress-wrap{flex:1;margin:0 20px;height:4px;background:var(--surface2);border-radius:2px}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:2px;transition:width .25s}
+.counter{font-size:.78em;color:var(--muted);min-width:50px;text-align:right}
+
+/* ── Cover ── */
+.cover{justify-content:center;align-items:center;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(88,166,255,.08) 0%,transparent 60%)}
+.cover-title{font-size:2.8em;font-weight:800;background:linear-gradient(135deg,#58a6ff 0%,#bc8cff 50%,#ff7b72 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;line-height:1.1}
+.cover-sub{color:var(--muted);font-size:1em;margin-bottom:28px}
+.cover-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:36px}
+.cover-key{font-size:.8em;color:#484f58}
+.cover-key kbd{background:var(--surface2);border:1px solid var(--border);padding:2px 8px;border-radius:5px;font-size:.9em;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="logo">🐍 Python 期末</span>
+    <div class="chapter-tabs" id="chapterTabs"></div>
+  </div>
+  <div class="topbar-right" id="slideTitle"></div>
+</div>
+
+<!-- SLIDES CONTAINER -->
+<div class="slides-wrap" id="wrap">
+
+<!-- 0: Cover -->
+<div class="slide cover active" data-chapter="概览">
+  <div class="cover-title">Python 期末复习</div>
+  <div class="cover-sub">列表 · 元组 · 字典 · 集合 · 流程控制 · 程序设计</div>
+  <div class="cover-tags">
+    <span class="tag tb">判断题 27</span>
+    <span class="tag tb">单选题 46</span>
+    <span class="tag tb">大题 20</span>
+    <span class="tag tb">填空+改错</span>
+  </div>
+  <div class="cover-key"><kbd>←</kbd> <kbd>→</kbd> 翻页 &nbsp;|&nbsp; 顶部标签快速跳转</div>
+</div>
+
+<!-- 1: 四种类型对比 -->
+<div class="slide" data-chapter="类型">
+  <div class="slide-header"><div class="badge">数据类型</div><div class="slide-title">四种容器类型</div></div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+    <table>
+      <tr><th>类型</th><th>创建</th><th>有序</th><th>可变</th><th>允许重复</th><th>访问方式</th></tr>
+      <tr><td><strong>list 列表</strong></td><td><code>[1,2,3]</code></td><td class="ok">✓</td><td class="ok">✓</td><td class="ok">✓</td><td>下标 <code>lst[i]</code></td></tr>
+      <tr><td><strong>tuple 元组</strong></td><td><code>(1,2,3)</code></td><td class="ok">✓</td><td class="no">✗</td><td class="ok">✓</td><td>下标 <code>t[i]</code></td></tr>
+      <tr><td><strong>dict 字典</strong></td><td><code>{'k':v}</code></td><td class="no">✗</td><td class="ok">✓</td><td>key唯一</td><td>键 <code>d['k']</code></td></tr>
+      <tr><td><strong>set 集合</strong></td><td><code>{1,2,3}</code></td><td class="no">✗</td><td class="ok">✓</td><td class="no">✗</td><td>不支持索引</td></tr>
+    </table>
+    <div class="g2">
+      <div class="card">
+        <div class="card-h">空容器创建</div>
+        <pre><span class="cm"># 列表</span>  lst = []
+<span class="cm"># 元组</span>  t   = ()
+<span class="cm"># 字典</span>  d   = {}       <span class="cm"># {} 是空字典</span>
+<span class="cm"># 集合</span>  s   = <span class="fn">set</span>()   <span class="cm"># 空集合必须用set()</span>
+<span class="cm"># ❌  s   = {}   这是空字典！</span></pre>
+        <div class="warn">{ } 是空字典，不是空集合</div>
+      </div>
+      <div class="card">
+        <div class="card-h">序列类型 vs 非序列</div>
+        <ul>
+          <li><span class="hlg">序列类型</span>：字符串、<strong>列表</strong>、<strong>元组</strong></li>
+          <li><span class="hlr">不是序列</span>：字典、集合（无序）</li>
+          <li>字典的 key 必须是<strong>不可变类型</strong></li>
+          <li>列表不能做字典 key，但元组可以</li>
+          <li>集合元素必须是<strong>不可变类型</strong>（不能放列表）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2: 列表方法 -->
+<div class="slide" data-chapter="列表">
+  <div class="slide-header"><div class="badge">列表 list</div><div class="slide-title">列表方法速查</div></div>
+  <table>
+    <tr><th>方法</th><th>说明</th><th>返回值</th><th>是否修改原列表</th></tr>
+    <tr><td><code>append(x)</code></td><td>末尾添加<strong>一个</strong>元素（x可以是列表）</td><td class="no">None</td><td class="ok">改变</td></tr>
+    <tr><td><code>extend(seq)</code></td><td>追加另一序列的<strong>每个</strong>元素</td><td class="no">None</td><td class="ok">改变</td></tr>
+    <tr><td><code>insert(i, x)</code></td><td>在下标 i 处插入 x</td><td class="no">None</td><td class="ok">改变</td></tr>
+    <tr><td><code>remove(x)</code></td><td>删除第一个值为 x 的元素</td><td class="no">None ← 无返回值</td><td class="ok">改变</td></tr>
+    <tr><td><code>pop(i=-1)</code></td><td>删除并返回下标 i 元素（默认最后）</td><td class="ok">元素值</td><td class="ok">改变</td></tr>
+    <tr><td><code>index(x)</code></td><td>返回第一个 x 的下标</td><td class="ok">下标</td><td class="no">不变</td></tr>
+    <tr><td><code>count(x)</code></td><td>统计 x 出现次数</td><td class="ok">次数</td><td class="no">不变</td></tr>
+    <tr><td><code>sort(reverse=…)</code></td><td>原地排序</td><td class="no">None</td><td class="ok">改变</td></tr>
+    <tr><td><code>reverse()</code></td><td>原地反转（非排序）</td><td class="no">None</td><td class="ok">改变</td></tr>
+    <tr><td><code>clear()</code></td><td>清空，保留变量</td><td class="no">None</td><td class="ok">改变</td></tr>
+    <tr><td><code>sorted(lst)</code></td><td>内置函数，返回新列表</td><td class="ok">新列表</td><td class="no">不变</td></tr>
+  </table>
+  <div class="g2" style="margin-top:10px">
+    <div class="warn"><strong>remove() 没有返回值</strong>——remove(1) 返回 None，不是被删除的元素</div>
+    <div class="warn"><strong>insert(0, x)</strong> 才是插到开头；insert(1, x) 是第二个位置</div>
+  </div>
+</div>
+
+<!-- 3: 切片 -->
+<div class="slide" data-chapter="列表">
+  <div class="slide-header"><div class="badge">列表 list</div><div class="slide-title">切片 lst[start : stop : step]</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">规则</div>
+        <ul>
+          <li>结果包含 start，<strong>不含 stop</strong></li>
+          <li>省略 start：从头；省略 stop：到尾</li>
+          <li>step 正：从左往右；step 负：从右往左</li>
+          <li>负数下标：<code>-1</code> = 最后，<code>-2</code> = 倒数第二</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-h">常考案例</div>
+        <pre>lst = [<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>,<span class="num">5</span>,<span class="num">6</span>]
+lst[::<span class="num">2</span>]   → [<span class="num">1</span>,<span class="num">3</span>,<span class="num">5</span>]    <span class="cm"># 下标0,2,4</span>
+lst[<span class="num">1</span>:<span class="num">4</span>:<span class="num">2</span>] → [<span class="num">2</span>,<span class="num">4</span>]     <span class="cm"># 下标1,3</span>
+lst[::<span class="num">-1</span>]  → [<span class="num">6</span>,<span class="num">5</span>,<span class="num">4</span>,<span class="num">3</span>,<span class="num">2</span>,<span class="num">1</span>]
+lst[<span class="num">0</span>:<span class="num">-2</span>]  → [<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>]
+lst[:]     → [<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>,<span class="num">5</span>,<span class="num">6</span>] <span class="cm"># 完整复制</span>
+
+s = [<span class="st">"seashell"</span>,<span class="st">"gold"</span>,<span class="st">"pink"</span>,<span class="st">"brown"</span>,<span class="st">"purple"</span>,<span class="st">"tomato"</span>]
+s[<span class="num">1</span>:<span class="num">4</span>:<span class="num">2</span>] → [<span class="st">'gold'</span>,<span class="st">'brown'</span>]  <span class="cm"># 下标1,3</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">等价关系</div>
+        <pre>s[<span class="num">0</span>:<span class="num">-1</span>]  ≡  s[:<span class="fn">len</span>(s)<span class="num">-1</span>]  ≡  s[:<span class="num">-1</span>]
+s[<span class="num">-1</span>]    ≡  s[<span class="fn">len</span>(s)<span class="num">-1</span>]</pre>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">嵌套列表索引</div>
+        <pre>ls = [<span class="num">3.5</span>, <span class="st">"Python"</span>, [<span class="num">10</span>,<span class="st">"LIST"</span>], <span class="num">3.6</span>]
+ls[<span class="num">2</span>]         → [<span class="num">10</span>, <span class="st">"LIST"</span>]
+ls[<span class="num">2</span>][<span class="num">-1</span>]     → <span class="st">"LIST"</span>
+ls[<span class="num">2</span>][<span class="num">-1</span>][<span class="num">1</span>] → <span class="st">"I"</span>
+
+li = [<span class="st">"hello"</span>,<span class="st">"se"</span>,[[<span class="st">"m"</span>,<span class="st">"n"</span>],[<span class="st">"h"</span>,<span class="st">"kelly"</span>]],<span class="st">'all'</span>,<span class="num">123</span>]
+li[<span class="num">2</span>][<span class="num">1</span>][<span class="num">1</span>]  → <span class="st">"kelly"</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">sort vs sorted</div>
+        <table>
+          <tr><th></th><th>lst.sort()</th><th>sorted(lst)</th></tr>
+          <tr><td>改变原列表</td><td class="ok">是</td><td class="no">否</td></tr>
+          <tr><td>返回值</td><td class="no">None</td><td class="ok">新列表</td></tr>
+        </table>
+        <pre>a = [<span class="num">5</span>,<span class="num">1</span>,<span class="num">3</span>,<span class="num">4</span>]
+<span class="fn">sorted</span>(a, reverse=<span class="kw">True</span>) → [<span class="num">5</span>,<span class="num">4</span>,<span class="num">3</span>,<span class="num">1</span>]
+<span class="cm"># a 仍然是 [5,1,3,4]</span></pre>
+        <div class="warn">sort() 和 sorted() 都改变原列表 ← 错！sorted 不改变</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4: 列表推导式 -->
+<div class="slide" data-chapter="列表">
+  <div class="slide-header"><div class="badge">列表 list</div><div class="slide-title">列表推导式 &amp; range</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">语法</div>
+        <pre>[<span class="hl">表达式</span> <span class="kw">for</span> <span class="hl">变量</span> <span class="kw">in</span> <span class="hl">可迭代</span> <span class="kw">if</span> <span class="hl">条件</span>]</pre>
+        <pre><span class="cm"># 1到10的平方</span>
+[i**<span class="num">2</span> <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>,<span class="num">11</span>)]
+<span class="cm"># → [1,4,9,16,25,36,49,64,81,100]</span>
+
+<span class="cm"># 带条件</span>
+[i <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">15</span>) <span class="kw">if</span> i%<span class="num">5</span>==<span class="num">0</span>]
+<span class="cm"># → [0, 5, 10]  (range15不含15)</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">嵌套推导</div>
+        <pre>[(m,n) <span class="kw">for</span> m <span class="kw">in</span> <span class="st">'ABC'</span> <span class="kw">for</span> n <span class="kw">in</span> <span class="st">'ABC'</span> <span class="kw">if</span> m!=n]
+<span class="cm"># [('A','B'),('A','C'),('B','A'),
+#  ('B','C'),('C','A'),('C','B')]</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">字符串输入转整数列表</div>
+        <pre><span class="cm"># 输入 "1,2,3,4" → [1,2,3,4]</span>
+lst = [<span class="fn">int</span>(i) <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">input</span>().<span class="fn">split</span>(<span class="st">","</span>)]</pre>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">range 常考</div>
+        <pre><span class="fn">range</span>(<span class="num">1</span>,<span class="num">11</span>)    <span class="cm"># 1 到 10</span>
+<span class="fn">range</span>(<span class="num">10</span>,<span class="num">100</span>)  <span class="cm"># 两位数</span>
+<span class="fn">list</span>(<span class="fn">range</span>(<span class="num">5</span>))  <span class="cm"># [0,1,2,3,4]</span>
+<span class="fn">list</span>(<span class="fn">range</span>(<span class="num">1</span>,<span class="num">4</span>))<span class="cm"># [1,2,3]</span>
+<span class="fn">tuple</span>(<span class="fn">range</span>(<span class="num">2</span>,<span class="num">10</span>,<span class="num">2</span>)) <span class="cm"># (2,4,6,8)</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">append vs extend</div>
+        <pre>ls = [<span class="st">"2020"</span>, <span class="st">"20.20"</span>, <span class="st">"Python"</span>]
+ls.append(<span class="num">2020</span>)
+ls.append([<span class="num">2020</span>, <span class="st">"2020"</span>])
+<span class="cm"># → ['2020','20.20','Python',2020,[2020,'2020']]
+# append 把列表整体作为一个元素</span>
+
+s = [<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>]
+s.extend([<span class="num">2</span>,<span class="num">3</span>])
+<span class="fn">len</span>(s) → <span class="num">6</span>  <span class="cm"># extend 逐个追加</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">被5整除的两位数</div>
+        <pre><span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>, <span class="num">100</span>):
+    <span class="kw">if</span> i % <span class="num">5</span> == <span class="num">0</span>:
+        <span class="fn">print</span>(i)</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5: 元组 -->
+<div class="slide" data-chapter="元组">
+  <div class="slide-header"><div class="badge">元组 tuple</div><div class="slide-title">元组特性 &amp; 易错</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">特性</div>
+        <ul>
+          <li>圆括号 <code>()</code>，元素用逗号分隔</li>
+          <li><strong>不可变</strong>：创建后不能增删改</li>
+          <li>支持下标、切片、<code>len()</code>、<code>in</code></li>
+          <li>元素<strong>可以是不同类型</strong></li>
+          <li>一个元组可以作为另一个元组的元素</li>
+        </ul>
+        <div class="tip">元素可以是不同类型 ✓</div>
+        <div class="warn">元组是可变数据类型 ← 错！元组不可变</div>
+        <div class="warn">元组元素不可以是不同类型 ← 错！可以不同</div>
+      </div>
+      <div class="card">
+        <div class="card-h">print(type(...))</div>
+        <pre><span class="fn">print</span>(<span class="fn">type</span>((<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>)))
+→ &lt;class <span class="st">'tuple'</span>&gt;
+
+<span class="fn">print</span>(<span class="fn">tuple</span>(<span class="fn">range</span>(<span class="num">2</span>,<span class="num">10</span>,<span class="num">2</span>)))
+→ (<span class="num">2</span>, <span class="num">4</span>, <span class="num">6</span>, <span class="num">8</span>)   <span class="cm"># 注意是圆括号</span></pre>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">反转元组</div>
+        <pre>t = (<span class="st">"cat"</span>,<span class="st">"dog"</span>,<span class="st">"tiger"</span>,<span class="st">"human"</span>)
+t[::<span class="num">-1</span>]
+→ (<span class="st">'human'</span>, <span class="st">'tiger'</span>, <span class="st">'dog'</span>, <span class="st">'cat'</span>)
+<span class="cm"># 返回元组类型（圆括号）</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">判断 True/False</div>
+        <table>
+          <tr><th>说法</th><th>答案</th></tr>
+          <tr><td>元组一旦创建就不能修改</td><td class="ok">✓</td></tr>
+          <tr><td>元组中元素不可以是不同类型</td><td class="no">✗</td></tr>
+          <tr><td>Python中元组采用逗号和括号(可选)表示</td><td class="ok">✓</td></tr>
+          <tr><td>元组是可变数据类型</td><td class="no">✗</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 6: 字典 -->
+<div class="slide" data-chapter="字典">
+  <div class="slide-header"><div class="badge">字典 dict</div><div class="slide-title">字典操作全览</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">特性</div>
+        <ul>
+          <li>花括号 <code>{}</code>，键值对 <code>key: value</code></li>
+          <li><strong>key 必须是不可变类型</strong>（int、str、tuple ✓；list ✗）</li>
+          <li>value 可以是任意类型</li>
+          <li>无序，不能用整数下标，用 <code>d[key]</code> 取值</li>
+          <li><code>len(d)</code> → 键值对数量</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-h">常用操作</div>
+        <table>
+          <tr><th>操作</th><th>说明</th></tr>
+          <tr><td><code>d[key]</code></td><td>取值，key不存在则报错</td></tr>
+          <tr><td><code>d.get(key)</code></td><td>取值，不存在返回 None</td></tr>
+          <tr><td><code>d[key]=val</code></td><td>添加或修改</td></tr>
+          <tr><td><code>del d[key]</code></td><td>删除键值对</td></tr>
+          <tr><td><code>d.clear()</code></td><td>清空，<strong>保留变量</strong></td></tr>
+          <tr><td><code>key in d</code></td><td>判断key是否存在</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">常考代码</div>
+        <pre>D = {<span class="st">'A'</span>:<span class="num">10</span>,<span class="st">'B'</span>:<span class="num">20</span>,<span class="st">'C'</span>:<span class="num">30</span>,<span class="st">'D'</span>:<span class="num">40</span>}
+D[<span class="st">'D'</span>]  → <span class="num">40</span>   <span class="cm"># 用字符串key</span>
+D[<span class="num">3</span>]    → 报错  <span class="cm"># 不能用整数下标</span>
+
+d = {<span class="st">'abc'</span>:<span class="num">123</span>, <span class="st">'def'</span>:<span class="num">456</span>, <span class="st">'ghi'</span>:<span class="num">789</span>}
+<span class="fn">len</span>(d) → <span class="num">3</span>   <span class="cm"># 键值对数量</span>
+
+<span class="cm"># 月份花卉 .get() 用法</span>
+MonthandFlower.get(<span class="fn">str</span>(n)+<span class="st">"月"</span>)
+
+<span class="cm"># 不能创建字典（list不能做key）</span>
+d = {[<span class="num">1</span>,<span class="num">2</span>]:<span class="num">3</span>}   <span class="cm"># ❌ 报错</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">创建字典对比</div>
+        <pre>d = {}                  <span class="cm"># 空字典 ✓</span>
+d = {<span class="num">1</span>:<span class="num">2</span>, <span class="num">3</span>:<span class="num">4</span>}         <span class="cm"># 整数key ✓</span>
+d = {(<span class="num">1</span>,<span class="num">2</span>):<span class="num">3</span>}           <span class="cm"># 元组key ✓</span>
+d = {<span class="st">'张三'</span>:<span class="num">1</span>}           <span class="cm"># 字符串key ✓</span>
+d = {[<span class="num">1</span>,<span class="num">2</span>]:<span class="num">3</span>}           <span class="cm"># ❌ 列表不能做key</span></pre>
+        <div class="warn">d.clear() 保留变量本身；清空后 d 是 {}，不是未定义</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 7: 集合 -->
+<div class="slide" data-chapter="集合">
+  <div class="slide-header"><div class="badge">集合 set</div><div class="slide-title">集合操作</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">特性</div>
+        <ul>
+          <li>无序，不支持索引、切片</li>
+          <li>元素唯一，自动去重</li>
+          <li>空集合必须用 <code>set()</code>，不能 <code>{}</code></li>
+        </ul>
+        <div class="tip">s=set() 是空集合 ✓</div>
+        <div class="warn">集合是有序的 ← 错！集合无序</div>
+      </div>
+      <div class="card">
+        <div class="card-h">集合运算</div>
+        <table>
+          <tr><th>符号</th><th>方法</th><th>含义</th></tr>
+          <tr><td><code>s1 | s2</code></td><td><code>.union()</code></td><td>并集 ← 合并</td></tr>
+          <tr><td><code>s1 & s2</code></td><td><code>.intersection()</code></td><td>交集 ← 共同元素</td></tr>
+          <tr><td><code>s1 - s2</code></td><td><code>.difference()</code></td><td>差集</td></tr>
+        </table>
+        <div class="tip">s1 & s2 与 s1.intersection(s2) 等价 ✓</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">去重 + sum</div>
+        <pre>a = <span class="fn">set</span>([<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">3</span>,<span class="num">4</span>,<span class="num">4</span>,<span class="num">4</span>])
+<span class="cm"># a = {1,2,3,4}  自动去重</span>
+<span class="fn">sum</span>(a) → <span class="num">10</span>   <span class="cm"># 1+2+3+4</span>
+
+<span class="cm"># 以下哪个不能创建集合？</span>
+s1 = <span class="fn">set</span>()         <span class="cm"># 空集合 ✓</span>
+s2 = <span class="fn">set</span>(<span class="st">"abcd"</span>)   <span class="cm"># {'a','b','c','d'} ✓</span>
+s3 = {<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>}     <span class="cm"># 集合 ✓  ← 没有冒号</span>
+s4 = <span class="fn">set</span>([<span class="num">3</span>,<span class="num">2</span>,<span class="num">1</span>])  <span class="cm"># {1,2,3} ✓</span>
+<span class="cm"># ❌: {1,2,3,4} 写成 s3 是集合没问题</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">字典 vs 集合 区分</div>
+        <pre>{<span class="num">1</span>:<span class="num">2</span>, <span class="num">3</span>:<span class="num">4</span>}   <span class="cm"># 字典（有冒号）</span>
+{<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>}    <span class="cm"># 集合（没有冒号）</span>
+{}            <span class="cm"># 空字典（不是空集合）</span>
+<span class="fn">set</span>()        <span class="cm"># 空集合</span>
+
+<span class="cm"># 以下定义了一个字典的是：</span>
+{}  <span class="cm"># ← 字典 ✓</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 8: for 循环 -->
+<div class="slide" data-chapter="流程">
+  <div class="slide-header"><div class="badge">流程控制</div><div class="slide-title">for 循环</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">遍历 + print 格式</div>
+        <pre>vlist = <span class="fn">list</span>(<span class="fn">range</span>(<span class="num">5</span>))
+<span class="kw">for</span> e <span class="kw">in</span> vlist:
+    <span class="fn">print</span>(e, end=<span class="st">","</span>)
+<span class="cm"># 输出: 0,1,2,3,4,  (末尾有逗号)</span>
+
+<span class="kw">for</span> i <span class="kw">in</span> [<span class="st">"pop star"</span>]:
+    <span class="kw">pass</span>
+    <span class="fn">print</span>(i, end=<span class="st">""</span>)
+<span class="cm"># 输出: pop star</span>
+<span class="cm"># pass 只占位，不跳过后面语句</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">生成列表 + 筛选</div>
+        <pre>ls = []
+ls1 = []
+n = <span class="fn">int</span>(<span class="fn">input</span>())
+m = <span class="fn">int</span>(<span class="fn">input</span>())
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, n+<span class="num">1</span>):
+    ls.append(i)
+<span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, n+<span class="num">1</span>):
+    <span class="kw">if</span> x % m != <span class="num">0</span>:   <span class="cm"># 不是m的倍数</span>
+        ls1.append(x)</pre>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">筛选非质数</div>
+        <pre>a = []
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">2</span>,<span class="num">10</span>):
+    count = <span class="num">0</span>
+    <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">2</span>, i<span class="num">-1</span>):
+        <span class="kw">if</span> i % x == <span class="num">0</span>:
+            count += <span class="num">1</span>
+    <span class="kw">if</span> count != <span class="num">0</span>:
+        a.append(i)
+<span class="fn">print</span>(a) <span class="cm"># [4,6,8,9]  非质数</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">二维列表对角乘积</div>
+        <pre>a = [[<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>],[<span class="num">4</span>,<span class="num">5</span>,<span class="num">6</span>],[<span class="num">7</span>,<span class="num">8</span>,<span class="num">9</span>]]
+p = <span class="num">1</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="fn">len</span>(a)):
+    p *= a[i][i]
+<span class="cm"># p = a[0][0]*a[1][1]*a[2][2]</span>
+<span class="cm"># p = 1*5*9 = 45</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 9: while 循环 -->
+<div class="slide" data-chapter="流程">
+  <div class="slide-header"><div class="badge">流程控制</div><div class="slide-title">while 循环常用模板</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">持续输入直到 q</div>
+        <pre>lst = []
+<span class="kw">while</span> <span class="kw">True</span>:
+    x = <span class="fn">input</span>()
+    <span class="kw">if</span> x == <span class="st">'q'</span>:
+        <span class="kw">break</span>
+    <span class="kw">else</span>:
+        lst.append(<span class="fn">int</span>(x))</pre>
+      </div>
+      <div class="card">
+        <div class="card-h">登录验证（for...else 3次）</div>
+        <pre><span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>):
+    uname = <span class="fn">input</span>()
+    pwd   = <span class="fn">input</span>()
+    <span class="kw">if</span> uname == <span class="st">"admin"</span> <span class="kw">and</span> pwd == <span class="st">"admin"</span>:
+        <span class="fn">print</span>(<span class="st">"登录成功！"</span>)
+        <span class="kw">break</span>
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="st">"输入有误！"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"对不起，三次输入错误！"</span>)</pre>
+        <div class="note">for...else 的 else 在循环没被 break 时执行</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">成绩范围验证</div>
+        <pre><span class="kw">while</span> <span class="kw">True</span>:
+    n = <span class="fn">int</span>(<span class="fn">input</span>())
+    <span class="kw">if</span> <span class="num">0</span> <= n <= <span class="num">100</span>:
+        <span class="fn">print</span>(<span class="st">"程序结束"</span>)
+        <span class="kw">break</span>
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="st">"输入有误！"</span>)</pre>
+      </div>
+      <div class="card">
+        <div class="card-h">ASCII 输入 / n退出</div>
+        <pre><span class="kw">while</span> <span class="kw">True</span>:
+    s = <span class="fn">input</span>()
+    <span class="kw">if</span> s <span class="kw">in</span> <span class="st">"nN"</span>:
+        <span class="kw">break</span>
+    <span class="kw">if</span> <span class="num">0</span> <= <span class="fn">int</span>(s) <= <span class="num">127</span>:
+        <span class="fn">print</span>(<span class="fn">chr</span>(<span class="fn">int</span>(s)))
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="st">"请重新输入"</span>)
+
+<span class="cm"># chr/ord</span>
+<span class="fn">ord</span>(<span class="st">'a'</span>) → <span class="num">97</span>
+<span class="fn">chr</span>(<span class="num">97</span>)  → <span class="st">'a'</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 10: 数学公式 -->
+<div class="slide" data-chapter="大题">
+  <div class="slide-header"><div class="badge">大题模板</div><div class="slide-title">数学公式类</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">公式翻译对照</div>
+        <table>
+          <tr><th>数学</th><th>Python</th></tr>
+          <tr><td>x²</td><td><code>x**2</code></td></tr>
+          <tr><td>√x</td><td><code>x**0.5</code> 或 <code>x**(1/2)</code></td></tr>
+          <tr><td>∛x</td><td><code>x**(1/3)</code></td></tr>
+          <tr><td>sinx</td><td><code>sin(x)</code>（弧度）</td></tr>
+          <tr><td>cosx</td><td><code>cos(x)</code>（弧度）</td></tr>
+          <tr><td>分数 a/b</td><td><code>(a) / (b)</code>（加括号）</td></tr>
+        </table>
+        <div class="warn">input() 括号内不能写提示文字</div>
+      </div>
+      <div class="card">
+        <div class="card-h">数位拆分</div>
+        <pre>n = <span class="num">12345</span>
+个位 = n % <span class="num">10</span>          → <span class="num">5</span>
+十位 = (n//<span class="num">10</span>) % <span class="num">10</span>   → <span class="num">4</span>
+百位 = (n//<span class="num">100</span>) % <span class="num">10</span>  → <span class="num">3</span>
+千位 = (n//<span class="num">1000</span>) % <span class="num">10</span> → <span class="num">2</span>
+万位 = n // <span class="num">10000</span>     → <span class="num">1</span>
+
+<span class="cm"># 分钱</span>
+m = <span class="fn">int</span>(<span class="fn">input</span>())
+y = m // <span class="num">100</span>
+j = (m // <span class="num">10</span>) % <span class="num">10</span>
+f = m % <span class="num">10</span>
+<span class="fn">print</span>(<span class="st">"%d元%d角%d分"</span> % (y, j, f))</pre>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">公式完整模板</div>
+        <pre><span class="kw">from</span> math <span class="kw">import</span> sin, cos
+
+x = <span class="fn">int</span>(<span class="fn">input</span>())
+y = <span class="fn">int</span>(<span class="fn">input</span>())
+
+<span class="cm"># sinx + (cosy - 5x) / √(x²+1)</span>
+n = sin(x) + (cos(y) - <span class="num">5</span>*x) / (x**<span class="num">2</span>+<span class="num">1</span>)**<span class="num">0.5</span>
+<span class="fn">print</span>(<span class="st">"%.2f"</span> % n)</pre>
+        <pre><span class="kw">from</span> math <span class="kw">import</span> sin, cos
+
+a = <span class="fn">int</span>(<span class="fn">input</span>()); b = <span class="fn">int</span>(<span class="fn">input</span>()); c = <span class="fn">int</span>(<span class="fn">input</span>())
+
+<span class="cm"># (-x+√(x²+4y))/(2x+1) + siny + cosx</span>
+n = (-x + (x**<span class="num">2</span>+<span class="num">4</span>*y)**<span class="num">0.5</span>) / (<span class="num">2</span>*x+<span class="num">1</span>) + sin(y) + cos(x)
+<span class="fn">print</span>(<span class="st">"%.2f"</span> % n)</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 11: 列表大题 -->
+<div class="slide" data-chapter="大题">
+  <div class="slide-header"><div class="badge">大题模板</div><div class="slide-title">列表操作类</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">两个列表合并降序</div>
+        <pre>list1 = []
+list2 = []
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">4</span>):
+    list1.append(<span class="fn">int</span>(<span class="fn">input</span>()))
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>):
+    list2.append(<span class="fn">int</span>(<span class="fn">input</span>()))
+<span class="fn">print</span>(<span class="st">"原列表 1："</span>, list1)
+<span class="fn">print</span>(<span class="st">"原列表 2："</span>, list2)
+list1.extend(list2)
+list1.sort(reverse=<span class="kw">True</span>)
+<span class="fn">print</span>(<span class="st">"排序过后："</span>, list1)</pre>
+      </div>
+      <div class="card">
+        <div class="card-h">股票数据处理</div>
+        <pre>data = [<span class="num">99.12</span>,<span class="num">104.44</span>,<span class="num">110.88</span>,<span class="num">99.18</span>,<span class="num">95.34</span>]
+
+<span class="cm"># 插入到开始位置</span>
+data.insert(<span class="num">0</span>, <span class="fn">float</span>(<span class="fn">input</span>()))
+
+<span class="cm"># 最小值及其位置（从1计）</span>
+pos = data.index(<span class="fn">min</span>(data)) + <span class="num">1</span>
+<span class="fn">print</span>(<span class="fn">min</span>(data), pos)
+
+<span class="cm"># 最大值移到末尾</span>
+x = <span class="fn">max</span>(data)
+data.remove(x)
+data.append(x)
+<span class="fn">print</span>(x, data)</pre>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">成绩统计（最高/最低两个）</div>
+        <pre>score = []
+<span class="kw">while</span> <span class="kw">True</span>:
+    s = <span class="fn">input</span>()
+    <span class="kw">if</span> s == <span class="st">"q"</span>:
+        <span class="kw">break</span>
+    <span class="kw">elif</span> <span class="num">0</span> <= <span class="fn">int</span>(s) <= <span class="num">100</span>:
+        score.append(<span class="fn">int</span>(s))
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="st">"输入有误"</span>)
+
+score.sort(reverse=<span class="kw">True</span>)    <span class="cm"># 降序</span>
+hs = score[<span class="num">0</span>:<span class="num">2</span>]             <span class="cm"># 最高两个</span>
+score.sort()                 <span class="cm"># 升序</span>
+ls = score[<span class="num">0</span>:<span class="num">2</span>]             <span class="cm"># 最低两个</span>
+<span class="fn">print</span>(hs[<span class="num">0</span>], hs[<span class="num">1</span>])
+<span class="fn">print</span>(ls[<span class="num">0</span>], ls[<span class="num">1</span>])</pre>
+      </div>
+      <div class="card">
+        <div class="card-h">奇数下标元素排序后放回</div>
+        <pre>ls1 = []
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="fn">len</span>(ls), <span class="num">2</span>):  <span class="cm"># 奇数下标</span>
+    ls1.append(ls[i])
+ls1.sort()
+j = <span class="num">0</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="fn">len</span>(ls), <span class="num">2</span>):
+    ls[i] = ls1[j]
+    j += <span class="num">1</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 12: 判断题 -->
+<div class="slide" data-chapter="判断题">
+  <div class="slide-header"><div class="badge">判断题 27</div><div class="slide-title">全部答案</div></div>
+  <div class="g2">
+    <table>
+      <tr><th>#</th><th>内容</th><th></th></tr>
+      <tr><td>1</td><td><code>lst[::2]</code> 取下标0和偶数下标的元素</td><td class="ok">✓</td></tr>
+      <tr><td>2</td><td><code>lst[0]="one"</code> 修改下标0的元素为"one"</td><td class="ok">✓</td></tr>
+      <tr><td>3</td><td>字典key和value都可以是任意类型</td><td class="no">✗ key必须不可变</td></tr>
+      <tr><td>4</td><td>元组是可变数据类型</td><td class="no">✗</td></tr>
+      <tr><td>5</td><td><code>s=set()</code> 表示空集合</td><td class="ok">✓</td></tr>
+      <tr><td>6</td><td><code>lst.append(1)</code> 在末尾添加整数1</td><td class="ok">✓</td></tr>
+      <tr><td>7</td><td>列表是不可变数据类型</td><td class="no">✗</td></tr>
+      <tr><td>8</td><td>字典和列表都是可变序列</td><td class="ok">✓</td></tr>
+      <tr><td>9</td><td>元组是不可变数据类型</td><td class="ok">✓</td></tr>
+      <tr><td>10</td><td>集合数据类型是有序的</td><td class="no">✗</td></tr>
+      <tr><td>11</td><td><code>lst.append(1)</code> 等价于 <code>lst.index(lst[len],1)</code></td><td class="no">✗</td></tr>
+      <tr><td>12</td><td>切片step为正数时从start开始向后取</td><td class="ok">✓</td></tr>
+      <tr><td>13</td><td>字典以键值对方式存储数据</td><td class="ok">✓</td></tr>
+    </table>
+    <table>
+      <tr><th>#</th><th>内容</th><th></th></tr>
+      <tr><td>14</td><td><code>s1|s2</code> 表示集合并运算</td><td class="ok">✓</td></tr>
+      <tr><td>15</td><td>列表长度不可变</td><td class="no">✗</td></tr>
+      <tr><td>16</td><td><code>lst.pop()</code> 无返回值</td><td class="no">✗ 有返回值</td></tr>
+      <tr><td>17</td><td>字典可以动态增删元素</td><td class="ok">✓</td></tr>
+      <tr><td>18</td><td>在lst起始位置插入1：<code>lst.insert(1,1)</code></td><td class="no">✗ 应是insert(0,1)</td></tr>
+      <tr><td>19</td><td>元素>5时，<code>lst=lst[0:-2]</code> 可删掉后两个</td><td class="ok">✓</td></tr>
+      <tr><td>20</td><td><code>lst.remove(1)</code> 有返回值且为1</td><td class="no">✗ remove无返回值</td></tr>
+      <tr><td>21</td><td>Python字典元素可以通过下标索引</td><td class="no">✗</td></tr>
+      <tr><td>22</td><td><code>s1&s2</code> 与 <code>s1.intersection(s2)</code> 等价</td><td class="ok">✓</td></tr>
+      <tr><td>23</td><td>sort()和sorted()都会改变原列表</td><td class="no">✗ sorted不改变</td></tr>
+      <tr><td>24</td><td>字典中的元素是有序的</td><td class="no">✗</td></tr>
+      <tr><td>25</td><td><code>lst.append(1)</code> 添加的是字符串类型的1</td><td class="no">✗ 是整数</td></tr>
+      <tr><td>26</td><td>列表中不可以放入列表</td><td class="no">✗ 可以嵌套</td></tr>
+      <tr><td>27</td><td><code>lst={}</code> 表示空字典</td><td class="ok">✓</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 13: 单选易错 -->
+<div class="slide" data-chapter="单选题">
+  <div class="slide-header"><div class="badge">单选题</div><div class="slide-title">高频易错点</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">输出结果类考点</div>
+        <pre><span class="cm"># ① range结果：</span>
+<span class="fn">list</span>(<span class="fn">range</span>(<span class="num">1</span>,<span class="num">4</span>))  → [<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>]  <span class="cm"># 列表[]</span>
+<span class="fn">tuple</span>(<span class="fn">range</span>(<span class="num">2</span>,<span class="num">10</span>,<span class="num">2</span>)) → (<span class="num">2</span>,<span class="num">4</span>,<span class="num">6</span>,<span class="num">8</span>) <span class="cm"># 元组()</span>
+
+<span class="cm"># ② len嵌套列表</span>
+ls = [[<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>],[<span class="num">4</span>,<span class="num">5</span>],<span class="num">6</span>,[<span class="num">7</span>,<span class="num">8</span>]]
+<span class="fn">len</span>(ls) → <span class="num">4</span>  <span class="cm"># 只数外层</span>
+
+<span class="cm"># ③ set去重后sum</span>
+a = <span class="fn">set</span>([<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">3</span>,<span class="num">4</span>,<span class="num">4</span>])
+<span class="fn">sum</span>(a) → <span class="num">10</span>
+
+<span class="cm"># ④ 字典len</span>
+d = {<span class="st">'abc'</span>:<span class="num">123</span>, <span class="st">'def'</span>:<span class="num">456</span>, <span class="st">'ghi'</span>:<span class="num">789</span>}
+<span class="fn">len</span>(d) → <span class="num">3</span>  <span class="cm"># 键值对数量</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">字符串操作</div>
+        <pre>s = <span class="st">"The python language is a multimodel language."</span>
+s.split(<span class="st">' '</span>)
+→ [<span class="st">'The'</span>,<span class="st">'python'</span>,<span class="st">'language'</span>,<span class="st">'is'</span>,<span class="st">'a'</span>,<span class="st">'multimodel'</span>,<span class="st">'language.'</span>]
+<span class="cm"># 返回列表，注意最后一个有句号</span>
+
+s = [<span class="st">'a'</span>,<span class="st">'b'</span>,<span class="num">2</span>]
+s[<span class="st">'b'</span>]  → <span class="cm">报错（列表不能用字符串索引）</span></pre>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">不是Python数据类型</div>
+        <ul>
+          <li>Python数据类型：int, float, str, bool, list, tuple, dict, set</li>
+          <li><span class="hlr">实数</span>不是Python数据类型名（float 才是）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-h">字符串循环 + 二维列表</div>
+        <pre>s = <span class="st">""</span>
+li = [<span class="st">'alex'</span>,<span class="st">'eric'</span>,<span class="st">'rain'</span>]
+<span class="kw">for</span> item <span class="kw">in</span> li:
+    s = s + item + <span class="st">"_"</span>
+<span class="fn">print</span>(s)  <span class="cm"># alex_eric_rain_  (末尾有_)</span>
+
+a = [[<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>],[<span class="num">4</span>,<span class="num">5</span>,<span class="num">6</span>],[<span class="num">7</span>,<span class="num">8</span>,<span class="num">9</span>]]
+p = <span class="num">1</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="fn">len</span>(a)): p *= a[i][i]
+<span class="cm"># 1*5*9 = 45</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">sort 降序参数</div>
+        <pre>lst.sort(reverse=<span class="kw">True</span>)  <span class="cm"># 降序 ← 大写True</span>
+<span class="cm"># reverse=true  ← 错！</span>
+<span class="cm"># reverse=True  ← 正确</span></pre>
+        <div class="warn">Python 布尔值是 True / False（首字母大写）</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 14: 填空&改错 -->
+<div class="slide" data-chapter="填空改错">
+  <div class="slide-header"><div class="badge">填空 &amp; 改错</div><div class="slide-title">答题模板</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">填空1：被5整除的两位数</div>
+        <pre><span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>, <span class="num">100</span>):
+    <span class="kw">if</span> i % <span class="num">5</span> == <span class="num">0</span>:
+        <span class="fn">print</span>(i)</pre>
+      </div>
+      <div class="card">
+        <div class="card-h">填空2：3次登录验证</div>
+        <pre><span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>):
+    uname = <span class="fn">input</span>()
+    pwd   = <span class="fn">input</span>()
+    <span class="kw">if</span> uname == <span class="st">"admin"</span> <span class="kw">and</span> pwd == <span class="st">"admin"</span>:
+        <span class="fn">print</span>(<span class="st">"登录成功！"</span>)
+        <span class="kw">break</span>
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="st">"输入有误！"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"对不起，三次输入错误！"</span>)</pre>
+      </div>
+      <div class="card">
+        <div class="card-h">填空3：成绩验证</div>
+        <pre><span class="kw">while</span> <span class="kw">True</span>:
+    n = <span class="fn">int</span>(<span class="fn">input</span>())
+    <span class="kw">if</span> <span class="num">0</span> <= n <= <span class="num">100</span>:
+        <span class="fn">print</span>(<span class="st">"程序结束"</span>)
+        <span class="kw">break</span>
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="st">"输入有误！"</span>)</pre>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">改错常见错误清单</div>
+        <table>
+          <tr><th>错误类型</th><th>说明</th></tr>
+          <tr><td>缩进错误</td><td>if/for/while 下面必须缩进4空格</td></tr>
+          <tr><td>赋值 vs 比较</td><td><code>==</code> 比较，<code>=</code> 赋值</td></tr>
+          <tr><td>逻辑运算符</td><td>用 <code>and</code>/<code>or</code>，不是 <code>&&</code>/<code>||</code></td></tr>
+          <tr><td>break 位置</td><td>应在成功条件 <strong>内部</strong></td></tr>
+          <tr><td>range 边界</td><td>range(3)=0,1,2；range(1,4)=1,2,3</td></tr>
+          <tr><td>类型转换</td><td>input()是字符串，需 int() 转换</td></tr>
+          <tr><td>for...else</td><td>else 在循环未被break时执行</td></tr>
+          <tr><td>True/False</td><td>首字母大写，不是true/false</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-h">改错完整模板</div>
+        <pre>count = <span class="num">0</span>
+<span class="kw">while</span> <span class="kw">True</span>:
+    uname = <span class="fn">input</span>()
+    pwd   = <span class="fn">input</span>()
+    <span class="kw">if</span> uname == <span class="st">"admin"</span> <span class="kw">and</span> pwd == <span class="st">"admin"</span>:
+        <span class="fn">print</span>(<span class="st">"登录成功！"</span>)
+        <span class="kw">break</span>
+    <span class="kw">else</span>:
+        count += <span class="num">1</span>
+        <span class="fn">print</span>(<span class="st">"输入有误！"</span>)
+        <span class="kw">if</span> count >= <span class="num">3</span>:
+            <span class="fn">print</span>(<span class="st">"对不起，三次输入错误！"</span>)
+            <span class="kw">break</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 15: 速查卡 -->
+<div class="slide" data-chapter="速查">
+  <div class="slide-header"><div class="badge">速查</div><div class="slide-title">考前速查卡</div></div>
+  <div class="g3">
+    <div class="card">
+      <div class="card-h">有返回值 vs 无返回值</div>
+      <p><span class="hlg">有返回值：</span></p>
+      <ul>
+        <li><code>pop()</code> → 被删除的元素</li>
+        <li><code>index(x)</code> → 下标</li>
+        <li><code>count(x)</code> → 次数</li>
+        <li><code>sorted(lst)</code> → 新列表</li>
+      </ul>
+      <p style="margin-top:8px"><span class="hlr">无返回值（None）：</span></p>
+      <ul>
+        <li>append / extend / insert</li>
+        <li>remove / clear</li>
+        <li>sort / reverse</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-h">改变 vs 不改变原列表</div>
+      <p><span class="hlg">改变原列表：</span></p>
+      <ul>
+        <li>sort, reverse, append</li>
+        <li>extend, insert, remove, pop</li>
+      </ul>
+      <p style="margin-top:8px"><span class="hlr">不改变（返回新值）：</span></p>
+      <ul>
+        <li><code>sorted(lst)</code> 返回新列表</li>
+        <li><code>lst[:]</code> 切片返回新列表</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-h">集合运算记忆</div>
+      <pre>s1 = {<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>}
+s2 = {<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>}
+s1 | s2 → {<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>} 并
+s1 & s2 → {<span class="num">2</span>,<span class="num">3</span>}   交
+s1 - s2 → {<span class="num">1</span>}    差</pre>
+    </div>
+    <div class="card">
+      <div class="card-h">切片速记</div>
+      <pre>lst[::-<span class="num">1</span>]  整体反转
+lst[-<span class="num">1</span>]    最后一个
+lst[:-<span class="num">1</span>]   去掉最后一个
+lst[-<span class="num">2</span>:]   最后两个
+lst[:]     完整复制
+lst[<span class="num">1</span>::<span class="num">2</span>]  奇数下标</pre>
+    </div>
+    <div class="card">
+      <div class="card-h">类型速记</div>
+      <table>
+        <tr><th>类型</th><th>括号</th><th>可变</th></tr>
+        <tr><td>list</td><td>[ ]</td><td class="ok">✓</td></tr>
+        <tr><td>tuple</td><td>( )</td><td class="no">✗</td></tr>
+        <tr><td>dict</td><td>{ : }</td><td class="ok">✓</td></tr>
+        <tr><td>set</td><td>{ }</td><td class="ok">✓</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-h">for...else 结构</div>
+      <pre><span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>):
+    <span class="kw">if</span> ...: <span class="kw">break</span>
+<span class="kw">else</span>:
+    <span class="cm"># 没有 break 时执行</span>
+    <span class="fn">print</span>(<span class="st">"三次均错误"</span>)</pre>
+    </div>
+  </div>
+</div>
+
+</div><!-- end slides-wrap -->
+
+<!-- BOTTOM BAR -->
+<div class="bottombar">
+  <button class="nbtn" id="prev" onclick="go(-1)">← 上一页</button>
+  <div class="progress-wrap"><div class="progress-bar" id="bar"></div></div>
+  <button class="nbtn" id="next" onclick="go(1)">下一页 →</button>
+  <span class="counter" id="counter"></span>
+</div>
+
+<script>
+const slides = [...document.querySelectorAll('.slide')];
+const total = slides.length;
+let cur = 0;
+
+// Build chapter tabs
+const chaps = [...new Set(slides.map(s => s.dataset.chapter))];
+const tabsEl = document.getElementById('chapterTabs');
+chaps.forEach(c => {
+  const btn = document.createElement('button');
+  btn.className = 'ctab';
+  btn.textContent = c;
+  btn.onclick = () => {
+    const idx = slides.findIndex(s => s.dataset.chapter === c);
+    if (idx >= 0) show(idx);
+  };
+  tabsEl.appendChild(btn);
+});
+
+function show(n) {
+  slides[cur].classList.remove('active');
+  cur = Math.max(0, Math.min(n, total - 1));
+  slides[cur].classList.add('active');
+  slides[cur].scrollTop = 0;
+
+  document.getElementById('counter').textContent = (cur+1) + ' / ' + total;
+  document.getElementById('prev').disabled = cur === 0;
+  document.getElementById('next').disabled = cur === total - 1;
+  document.getElementById('bar').style.width = (cur/(total-1)*100) + '%';
+  document.getElementById('slideTitle').textContent = slides[cur].dataset.chapter || '';
+
+  // Update active tab
+  const curChap = slides[cur].dataset.chapter;
+  tabsEl.querySelectorAll('.ctab').forEach(b => {
+    b.classList.toggle('active', b.textContent === curChap);
+  });
+}
+
+function go(d) { show(cur + d); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   go(-1);
+});
+
+show(0);
+</script>
+</body>
+</html>
