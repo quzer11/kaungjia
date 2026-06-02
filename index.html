@@ -907,7 +907,381 @@ p = <span class="num">1</span>
   </div>
 </div>
 
-<!-- 15: 速查卡 -->
+<!-- 15: 字符串操作 -->
+<div class="slide" data-chapter="字符串">
+  <div class="slide-header"><div class="badge">字符串</div><div class="slide-title">字符串操作</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">常用字符串方法</div>
+        <table>
+          <tr><th>方法</th><th>说明</th><th>示例</th></tr>
+          <tr><td><code>split(sep)</code></td><td>按分隔符拆分，返回列表</td><td><code>"a,b,c".split(",") → ['a','b','c']</code></td></tr>
+          <tr><td><code>strip()</code></td><td>去掉首尾空格/换行</td><td><code>" hi ".strip() → 'hi'</code></td></tr>
+          <tr><td><code>upper()</code></td><td>转大写</td><td><code>"abc".upper() → 'ABC'</code></td></tr>
+          <tr><td><code>lower()</code></td><td>转小写</td><td><code>"ABC".lower() → 'abc'</code></td></tr>
+          <tr><td><code>replace(a,b)</code></td><td>替换</td><td><code>"hello".replace("l","r") → 'herro'</code></td></tr>
+          <tr><td><code>find(s)</code></td><td>找子串下标，找不到返回-1</td><td><code>"hello".find("ll") → 2</code></td></tr>
+          <tr><td><code>len(s)</code></td><td>字符串长度</td><td><code>len("hello") → 5</code></td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-h">字符串切片（同列表）</div>
+        <pre>s = <span class="st">"Python"</span>
+s[<span class="num">0</span>]    → <span class="st">'P'</span>
+s[-<span class="num">1</span>]   → <span class="st">'n'</span>
+s[<span class="num">1</span>:<span class="num">4</span>]  → <span class="st">'yth'</span>
+s[::<span class="num">-1</span>] → <span class="st">'nohtyP'</span>  <span class="cm"># 反转</span>
+
+<span class="cm"># split 返回列表</span>
+s = <span class="st">"The python language is a multimodel language."</span>
+s.split(<span class="st">' '</span>) → [<span class="st">'The'</span>,<span class="st">'python'</span>,<span class="st">'language'</span>,<span class="st">'is'</span>,<span class="st">'a'</span>,<span class="st">'multimodel'</span>,<span class="st">'language.'</span>]
+<span class="cm"># 注意最后一个元素带句号</span></pre>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">chr 和 ord</div>
+        <pre><span class="fn">ord</span>(<span class="st">'a'</span>) → <span class="num">97</span>    <span class="cm"># 字符 → ASCII码</span>
+<span class="fn">ord</span>(<span class="st">'A'</span>) → <span class="num">65</span>
+<span class="fn">ord</span>(<span class="st">'0'</span>) → <span class="num">48</span>
+<span class="fn">chr</span>(<span class="num">97</span>)  → <span class="st">'a'</span>   <span class="cm"># ASCII码 → 字符</span>
+<span class="fn">chr</span>(<span class="num">65</span>)  → <span class="st">'A'</span>
+
+<span class="cm"># 从右到左按ASCII存入列表</span>
+s = <span class="fn">input</span>()
+lst = []
+sp = s[::<span class="num">-1</span>]         <span class="cm"># 先反转字符串</span>
+<span class="kw">for</span> c <span class="kw">in</span> sp:
+    lst.append(<span class="fn">ord</span>(c))
+<span class="fn">print</span>(lst)</pre>
+      </div>
+      <div class="card">
+        <div class="card-h">print 格式化输出</div>
+        <pre><span class="fn">print</span>(<span class="st">"%.2f"</span> % n)       <span class="cm"># 保留2位小数</span>
+<span class="fn">print</span>(<span class="st">"%d"</span> % n)         <span class="cm"># 整数</span>
+<span class="fn">print</span>(<span class="st">"%d元%d角%d分"</span> % (y,j,f))
+<span class="fn">print</span>(e, end=<span class="st">","</span>)       <span class="cm"># 不换行，末尾加逗号</span>
+<span class="fn">print</span>(e, end=<span class="st">""</span>)        <span class="cm"># 不换行</span>
+
+<span class="cm"># input() 返回字符串，必须转换</span>
+n = <span class="fn">int</span>(<span class="fn">input</span>())        <span class="cm"># 整数</span>
+x = <span class="fn">float</span>(<span class="fn">input</span>())      <span class="cm"># 浮点数</span>
+s = <span class="fn">input</span>()             <span class="cm"># 字符串</span></pre>
+        <div class="warn">input() 括号内不能写提示文字，否则不得分</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 16: if/elif 大题 -->
+<div class="slide" data-chapter="大题">
+  <div class="slide-header"><div class="badge">大题模板</div><div class="slide-title">if / elif 条件判断类</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">购笔计价</div>
+        <pre>n = <span class="fn">int</span>(<span class="fn">input</span>())
+<span class="kw">if</span> <span class="num">0</span> < n <= <span class="num">30</span>:
+    <span class="fn">print</span>(<span class="st">"%d 元"</span> % (n*<span class="num">8</span>))
+<span class="kw">elif</span> <span class="num">30</span> < n <= <span class="num">50</span>:
+    <span class="fn">print</span>(<span class="st">"%d 元"</span> % (n*<span class="num">5</span>))
+<span class="kw">elif</span> n > <span class="num">50</span>:
+    <span class="fn">print</span>(<span class="st">"%d 元"</span> % (n*<span class="num">3</span>))</pre>
+      </div>
+      <div class="card">
+        <div class="card-h">判断3或5的倍数</div>
+        <pre>n = <span class="fn">int</span>(<span class="fn">input</span>())
+<span class="kw">if</span> n%<span class="num">3</span>==<span class="num">0</span> <span class="kw">and</span> n%<span class="num">5</span>==<span class="num">0</span>:
+    <span class="fn">print</span>(<span class="st">"3和5的公倍数"</span>)
+<span class="kw">elif</span> n%<span class="num">3</span>==<span class="num">0</span>:
+    <span class="fn">print</span>(<span class="st">"3的倍数"</span>)
+<span class="kw">elif</span> n%<span class="num">5</span>==<span class="num">0</span>:
+    <span class="fn">print</span>(<span class="st">"5的倍数"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"不是3也不是5的倍数"</span>)</pre>
+      </div>
+      <div class="card">
+        <div class="card-h">正负零判断</div>
+        <pre><span class="kw">while</span> <span class="kw">True</span>:
+    n = <span class="fn">input</span>()
+    <span class="kw">if</span> n == <span class="st">"n"</span> <span class="kw">or</span> n == <span class="st">"N"</span>:
+        <span class="kw">break</span>
+    <span class="kw">if</span> <span class="fn">float</span>(n) > <span class="num">0</span>:
+        <span class="fn">print</span>(<span class="st">"正数"</span>)
+    <span class="kw">elif</span> <span class="fn">float</span>(n) < <span class="num">0</span>:
+        <span class="fn">print</span>(<span class="st">"负数"</span>)
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="st">"零"</span>)</pre>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">四位数验证 + 各位求和</div>
+        <pre><span class="kw">while</span> <span class="kw">True</span>:
+    n = <span class="fn">int</span>(<span class="fn">input</span>())
+    <span class="kw">if</span> n < <span class="num">1000</span> <span class="kw">or</span> n > <span class="num">9999</span>:
+        <span class="fn">print</span>(<span class="st">"输入有误"</span>)
+    <span class="kw">else</span>:
+        n1 = n % <span class="num">10</span>           <span class="cm"># 个位</span>
+        n2 = (n // <span class="num">10</span>) % <span class="num">10</span>   <span class="cm"># 十位</span>
+        n3 = (n // <span class="num">100</span>) % <span class="num">10</span>  <span class="cm"># 百位</span>
+        n4 = n // <span class="num">1000</span>        <span class="cm"># 千位</span>
+        <span class="fn">print</span>(n1+n2+n3+n4)
+        <span class="kw">break</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">分钱程序</div>
+        <pre>m = <span class="fn">int</span>(<span class="fn">input</span>())
+y = m // <span class="num">100</span>           <span class="cm"># 元</span>
+j = (m // <span class="num">10</span>) % <span class="num">10</span>    <span class="cm"># 角</span>
+f = m % <span class="num">10</span>             <span class="cm"># 分</span>
+<span class="fn">print</span>(<span class="st">"%d元%d角%d分"</span> % (y, j, f))</pre>
+      </div>
+      <div class="card">
+        <div class="card-h">成绩等级划分</div>
+        <pre>n = <span class="fn">int</span>(<span class="fn">input</span>())
+<span class="kw">if</span> <span class="num">90</span> <= n <= <span class="num">100</span>:
+    <span class="fn">print</span>(<span class="st">"A"</span>)
+<span class="kw">elif</span> <span class="num">80</span> <= n < <span class="num">90</span>:
+    <span class="fn">print</span>(<span class="st">"B"</span>)
+<span class="kw">elif</span> <span class="num">70</span> <= n < <span class="num">80</span>:
+    <span class="fn">print</span>(<span class="st">"C"</span>)
+<span class="kw">elif</span> <span class="num">60</span> <= n < <span class="num">70</span>:
+    <span class="fn">print</span>(<span class="st">"D"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"不及格"</span>)</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 17: 单选代码追踪 Part2 -->
+<div class="slide" data-chapter="单选题">
+  <div class="slide-header"><div class="badge">单选题</div><div class="slide-title">代码追踪 — 逐题看结果</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">列表推导 + 条件</div>
+        <pre>[i <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">15</span>) <span class="kw">if</span> i%<span class="num">5</span>==<span class="num">0</span>]
+→ [<span class="num">0</span>, <span class="num">5</span>, <span class="num">10</span>]   <span class="cm"># range(15)是0..14，不含15</span>
+
+list1 = []; <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>,<span class="num">11</span>): list1.append(i**<span class="num">2</span>)
+→ [<span class="num">1</span>,<span class="num">4</span>,<span class="num">9</span>,<span class="num">16</span>,<span class="num">25</span>,<span class="num">36</span>,<span class="num">49</span>,<span class="num">64</span>,<span class="num">81</span>,<span class="num">100</span>]</pre>
+      </div>
+      <div class="card">
+        <div class="card-h">for + pass 不跳过</div>
+        <pre><span class="kw">for</span> i <span class="kw">in</span> [<span class="st">"pop star"</span>]:
+    <span class="kw">pass</span>
+    <span class="fn">print</span>(i, end=<span class="st">""</span>)
+→ pop star
+<span class="cm"># pass 只是占位，后面的 print 照样执行</span>
+<span class="cm"># "pop star" 是整个字符串，不是两个元素</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">sorted + reverse</div>
+        <pre>a = [<span class="num">5</span>,<span class="num">1</span>,<span class="num">3</span>,<span class="num">4</span>]
+<span class="fn">print</span>(<span class="fn">sorted</span>(a, reverse=<span class="kw">True</span>))
+→ [<span class="num">5</span>, <span class="num">4</span>, <span class="num">3</span>, <span class="num">1</span>]   <span class="cm"># 降序</span>
+<span class="cm"># a 本身不变，仍是 [5,1,3,4]</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">2 in listV → True/False</div>
+        <pre>listV = <span class="fn">list</span>(<span class="fn">range</span>(<span class="num">5</span>))   <span class="cm"># [0,1,2,3,4]</span>
+<span class="fn">print</span>(<span class="num">2</span> <span class="kw">in</span> listV)
+→ <span class="kw">True</span>
+<span class="cm"># in 只返回 True/False，不返回下标或-1</span></pre>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">b = a[:] 浅复制</div>
+        <pre>a = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]
+b = a[:]
+<span class="fn">print</span>(b) → [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]
+<span class="cm"># b 是独立新列表，不是 a 的引用</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">extend 后 len</div>
+        <pre>s = [<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>]
+s.extend([<span class="num">2</span>,<span class="num">3</span>])
+<span class="fn">print</span>(<span class="fn">len</span>(s)) → <span class="num">6</span>
+<span class="cm"># extend 逐个追加，s=[1,2,3,4,2,3]</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">t[::-1] 元组反转</div>
+        <pre>t = (<span class="st">"cat"</span>,<span class="st">"dog"</span>,<span class="st">"tiger"</span>,<span class="st">"human"</span>)
+t[::<span class="num">-1</span>]
+→ (<span class="st">'human'</span>, <span class="st">'tiger'</span>, <span class="st">'dog'</span>, <span class="st">'cat'</span>)
+<span class="cm"># 是元组 ()，不是列表 []</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">嵌套列表多级索引</div>
+        <pre>ls = [<span class="num">3.5</span>, <span class="st">"Python"</span>, [<span class="num">10</span>,<span class="st">"LIST"</span>], <span class="num">3.6</span>]
+ls[<span class="num">2</span>][<span class="num">-1</span>][<span class="num">1</span>] → <span class="st">"I"</span>
+<span class="cm"># ls[2]=[10,"LIST"] → [-1]="LIST" → [1]="I"</span>
+
+li = [<span class="st">"hello"</span>,<span class="st">"se"</span>,[[<span class="st">"m"</span>,<span class="st">"n"</span>],[<span class="st">"h"</span>,<span class="st">"kelly"</span>]],<span class="st">'all'</span>,<span class="num">123</span>]
+li[<span class="num">2</span>][<span class="num">1</span>][<span class="num">1</span>] → <span class="st">"kelly"</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 18: 单选题 字典集合追踪 -->
+<div class="slide" data-chapter="单选题">
+  <div class="slide-header"><div class="badge">单选题</div><div class="slide-title">字典 &amp; 集合追踪</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">字典 len / get / 清空</div>
+        <pre>d = {<span class="num">1</span>:<span class="st">'a'</span>, <span class="num">2</span>:<span class="st">'b'</span>, <span class="num">3</span>:<span class="st">'c'</span>}
+<span class="fn">print</span>(<span class="fn">len</span>(d))  → <span class="num">3</span>      <span class="cm"># 键值对数量</span>
+
+<span class="cm"># 清空字典并保留变量 → d.clear()</span>
+<span class="cm"># del d 是删除变量本身</span>
+<span class="cm"># d.remove() 不存在</span>
+<span class="cm"># d.pop() 需要指定key</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">字典 key 类型限制</div>
+        <pre><span class="cm"># 不能创建字典的写法：</span>
+d = {[<span class="num">1</span>,<span class="num">2</span>]:<span class="st">'python'</span>}   <span class="cm"># 列表不能做key</span>
+
+<span class="cm"># 能创建字典的写法：</span>
+d = {}                   <span class="cm"># 空字典</span>
+d = {(<span class="num">1</span>,<span class="num">2</span>):<span class="st">'python'</span>}    <span class="cm"># 元组做key</span>
+d = {<span class="num">3</span>:<span class="num">5</span>}               <span class="cm"># 整数做key</span>
+
+<span class="cm"># {} 定义的是字典</span>
+<span class="cm"># {1,2,3} 定义的是集合（无冒号）</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">字典关于错误说法</div>
+        <ul>
+          <li>值可以是任意类型的Python对象 — 正确</li>
+          <li>属于Python的不可变类型 — <span class="hlr">错误</span>（字典可变）</li>
+          <li>字典元素用花括号{}包裹 — 正确</li>
+          <li>由键值(key-value)对构成 — 正确</li>
+        </ul>
+        <div class="warn">字典是可变类型，不是不可变类型</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">set 去重后计算</div>
+        <pre>a = <span class="fn">set</span>([<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">3</span>,<span class="num">4</span>,<span class="num">4</span>,<span class="num">4</span>])
+<span class="cm"># a = {1,2,3,4}</span>
+<span class="fn">sum</span>(a) → <span class="num">10</span>
+
+<span class="cm"># 哪个不能创建集合？</span>
+s1 = <span class="fn">set</span>()          <span class="cm"># 空集合 ✓</span>
+s2 = <span class="fn">set</span>(<span class="st">"abcd"</span>)    <span class="cm"># {'a','b','c','d'} ✓</span>
+s3 = {<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>}      <span class="cm"># 集合 ✓</span>
+s4 = <span class="fn">set</span>([<span class="num">3</span>,<span class="num">2</span>,<span class="num">1</span>])   <span class="cm"># {1,2,3} ✓</span>
+<span class="cm"># {1,2,3,4} 直接赋值是集合，不是字典</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">max/min 注意事项</div>
+        <pre>s = [<span class="st">"seashell"</span>,<span class="st">"gold"</span>,<span class="st">"pink"</span>,<span class="st">"brown"</span>,<span class="st">"purple"</span>,<span class="st">"tomato"</span>]
+<span class="fn">len</span>(s)  → <span class="num">6</span>
+<span class="fn">min</span>(s)  → <span class="st">"brown"</span>   <span class="cm"># 字母序最小</span>
+<span class="fn">max</span>(s)  → <span class="st">"tomato"</span>  <span class="cm"># 字母序最大</span>
+
+<span class="cm"># max(s) 说法：</span>
+<span class="cm"># 返回序列最大元素，要求元素之间可比较 ← 正确</span>
+<span class="cm"># 一定能返回最大元素 ← 错（类型不可比则报错）</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-h">list + list 拼接</div>
+        <pre>list1 = [<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>]
+list2 = [<span class="num">4</span>,<span class="num">5</span>,<span class="num">6</span>]
+<span class="fn">print</span>(list1+list2)
+→ [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>]  <span class="cm"># 拼接新列表</span>
+<span class="cm"># 不是 [5,7,9] 逐项相加</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 19: 大题 千年虫 + ASCII -->
+<div class="slide" data-chapter="大题">
+  <div class="slide-header"><div class="badge">大题模板</div><div class="slide-title">while + 列表处理综合</div></div>
+  <div class="g2">
+    <div class="col">
+      <div class="card">
+        <div class="card-h">千年虫：年份转换</div>
+        <pre>lst = []
+<span class="kw">while</span> <span class="kw">True</span>:
+    x = <span class="fn">input</span>()
+    <span class="kw">if</span> x == <span class="st">'q'</span>:
+        <span class="kw">break</span>
+    lst.append(<span class="fn">int</span>(x))
+<span class="fn">print</span>(lst)
+
+<span class="cm"># 年份处理：0→2000，其余→1900+xx</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="fn">len</span>(lst)):
+    <span class="kw">if</span> lst[i] == <span class="num">0</span>:
+        lst[i] = <span class="num">2000</span>
+    <span class="kw">else</span>:
+        lst[i] = lst[i] + <span class="num">1900</span>
+
+lst.reverse()          <span class="cm"># 逆序（不是sort）</span>
+<span class="fn">print</span>(lst)</pre>
+      </div>
+      <div class="card">
+        <div class="card-h">ASCII码转字符</div>
+        <pre><span class="kw">while</span> <span class="kw">True</span>:
+    s = <span class="fn">input</span>()
+    <span class="kw">if</span> s <span class="kw">in</span> <span class="st">"nN"</span>:
+        <span class="kw">break</span>
+    <span class="kw">if</span> <span class="num">0</span> <= <span class="fn">int</span>(s) <= <span class="num">127</span>:
+        <span class="fn">print</span>(<span class="fn">chr</span>(<span class="fn">int</span>(s)))
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="st">"请重新输入"</span>)</pre>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-h">字符串从右到左 → ASCII列表</div>
+        <pre>s = <span class="fn">input</span>()
+lst = []
+sp = s[::<span class="num">-1</span>]            <span class="cm"># 字符串反转</span>
+<span class="kw">for</span> c <span class="kw">in</span> sp:
+    lst.append(<span class="fn">ord</span>(c))   <span class="cm"># 字符→ASCII</span>
+<span class="fn">print</span>(lst)</pre>
+      </div>
+      <div class="card">
+        <div class="card-h">split输入 + 修改奇数元素</div>
+        <pre><span class="cm"># 输入 "1,2,3,4,5" 形式</span>
+lst = [<span class="fn">int</span>(i) <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">input</span>().<span class="fn">split</span>(<span class="st">","</span>)]
+<span class="fn">print</span>(lst)
+
+<span class="cm"># 将奇数值替换为其平方</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="fn">len</span>(lst)):
+    <span class="kw">if</span> lst[i] % <span class="num">2</span> == <span class="num">1</span>:
+        lst[i] = lst[i] ** <span class="num">2</span>
+<span class="fn">print</span>(lst)</pre>
+      </div>
+      <div class="card">
+        <div class="card-h">奇数下标元素排序放回</div>
+        <pre>ls1 = []
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="fn">len</span>(ls), <span class="num">2</span>):   <span class="cm"># 下标1,3,5...</span>
+    ls1.append(ls[i])
+ls1.sort()
+
+j = <span class="num">0</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="fn">len</span>(ls), <span class="num">2</span>):
+    ls[i] = ls1[j]
+    j += <span class="num">1</span>
+<span class="fn">print</span>(ls)</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 20: 速查卡 -->
+
 <div class="slide" data-chapter="速查">
   <div class="slide-header"><div class="badge">速查</div><div class="slide-title">考前速查卡</div></div>
   <div class="g3">
